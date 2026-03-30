@@ -79,8 +79,7 @@ Create a `.env` file in the `server/` directory with the following variables:
 
 ```env
 PORT=5000
-MONGO_CONNECTION_URL=mongodb+srv://username:password@cluster.mongodb.net/db?appName=AppName
-CLIENT_BASE_URLS=http://localhost:5173
+MONGO_CONNECTION_URL=--url--
 PRIMARY_GMAIL=your-email@gmail.com
 PRIMARY_GMAIL_APP_PASS=your-app-specific-password
 ```

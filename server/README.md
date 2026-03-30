@@ -99,10 +99,7 @@ Create a `.env` file in the server root directory:
 PORT=5000
 
 # Database
-MONGO_CONNECTION_URL=mongodb+srv://username:password@cluster.mongodb.net/db?appName=AppName
-
-# CORS Configuration
-CLIENT_BASE_URLS=http://localhost:5173
+MONGO_CONNECTION_URL=--url--
 
 # Email Configuration (for OTP)
 PRIMARY_GMAIL=your-email@gmail.com
@@ -255,10 +252,8 @@ Add tests in a `tests/` directory and configure test scripts in `package.json`.
 ### Environment Variables for Production
 
 ```env
-NODE_ENV=production
 PORT=5000
 MONGO_CONNECTION_URL=mongodb+srv://...
-CLIENT_BASE_URLS=https://yourdomain.com
 PRIMARY_GMAIL=production-email@domain.com
 PRIMARY_GMAIL_APP_PASS=production-email-password
 ```
