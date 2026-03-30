@@ -1,5 +1,5 @@
 import type { NextFunction, Request, Response } from "express"
-import { BadRequest, NotFound, Unauthorized } from "../errors/index.js"
+import { BadRequest, NotFound } from "../errors/index.js"
 import User from "../models/User.js"
 
 export async function checkEmailExists(
@@ -14,9 +14,4 @@ export async function checkEmailExists(
   if (!user) throw new NotFound("User not found")
 
   res.sendStatus(200)
-}
-
-export async function getUsers(req: Request, res: Response) {
-  const users = await User.find({}).select("name role")
-  res.status(200).json({ success: true, data: users })
 }

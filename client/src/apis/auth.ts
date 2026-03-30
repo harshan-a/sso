@@ -22,6 +22,7 @@ export function signup(data: LoginData): Promise<AxiosResponse> {
 export function changePassword(data: {
   email: string
   password: string
+  otpId: string
 }): Promise<{ data: { success: boolean; msg: string } }> {
   return axios.post("api/v1/auth/change-password", data)
 }

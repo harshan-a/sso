@@ -9,6 +9,7 @@ import YamlJs from "yamljs"
 
 // routes
 import { userRouter, authRouter, otpRouter } from "./routers/index.js"
+import sendJwks from "./controllers/keysController.js"
 
 import notFound from "./middlewares/notFound.js"
 import errorHandling from "./middlewares/errorHandling.js"
@@ -25,9 +26,10 @@ app.use(cookieParser())
 app.use(morgan("dev"))
 
 // routes
-app.use("/api/v1/users", userRouter) // 2 end points
-app.use("/api/v1/auth", authRouter) // 3 end points
-app.use("/api/v1/otp", otpRouter) // 2 end points
+app.use("/api/v1/users", userRouter)
+app.use("/api/v1/auth", authRouter)
+app.use("/api/v1/otp", otpRouter)
+app.use("/.well-known/jwks.json", sendJwks)
 
 const docs = YamlJs.load("./swagger.yaml")
 app.use("/api-docs", swaggerUI.serve, swaggerUI.setup(docs))

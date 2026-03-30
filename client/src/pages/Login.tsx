@@ -35,8 +35,9 @@ export default function Login({ setIsLogin, setForgotPassword }: LoginProps) {
         code_challenge: codeChallenge,
       })
 
-      console.log(data)
+      // console.log(data)
       setErrorMessage("")
+      location.href = data.redirectUrl
     } catch (err: unknown) {
       if (err instanceof AxiosError) {
         if (err.response?.data) setErrorMessage(err.response?.data.msg)

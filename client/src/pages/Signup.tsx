@@ -38,6 +38,7 @@ export default function Signup({ setIsLogin }: SignupProps) {
 
       console.log(data)
       setErrorMessage("")
+      location.href = data.redirectUrl
     } catch (err: unknown) {
       if (err instanceof AxiosError) {
         if (err.response?.data) setErrorMessage(err.response?.data.msg)

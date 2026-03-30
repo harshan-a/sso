@@ -32,7 +32,7 @@ async function sendOTPEmail(email: string, otp: string) {
 }
 
 export async function sendOTP(req: Request, res: Response, next: NextFunction) {
-  const { email } = req.body
+  const { email } = req.body ? req.body : { email: false }
   if (!email) throw new BadRequest("Email is missing:(")
 
   const otp = generateOTP()
@@ -41,7 +41,7 @@ export async function sendOTP(req: Request, res: Response, next: NextFunction) {
     { otp, createAt: Date.now() },
     { upsert: true },
   )
-  await sendOTPEmail(email, otp)
+  sendOTPEmail(email, otp)
 
   res.status(200).json({ success: true, msg: "OTP successfully send." })
 }
@@ -52,12 +52,18 @@ export async function verifyOTP(
   next: NextFunction,
 ) {
   const { email, otp } = req.body
-  if (!email || !otp) throw new BadRequest("Email or OTP is missing:(")
+  if (!email || !otp) throw new BadRequest("Something is missing:(")
 
-  const otpInDb = await OTP.findOne({ email, otp })
+  const otpInDb = await OTP.findOneAndUpdate(
+    { email, otp },
+    { verified: true },
+    { upsert: false, new: true },
+  )
   if (!otpInDb) throw new Unauthorized("Invalid otp. Try again:(")
 
-  OTP.deleteOne({ _id: otpInDb._id })
-
-  res.status(200).json({ success: true, msg: "OTP verified successfully." })
+  res.status(200).json({
+    success: true,
+    msg: "OTP verified successfully.",
+    otpId: otpInDb._id,
+  })
 }

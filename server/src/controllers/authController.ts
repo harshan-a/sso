@@ -7,13 +7,14 @@ import {
   Forbidden,
 } from "../errors/index.js"
 import User from "../models/User.js"
+import OTP from "../models/Otp.js"
 import { StatusCodes } from "http-status-codes"
 import AuthorizationCode from "../models/AuthorizationCode.js"
 
 export async function login(req: Request, res: Response, next: NextFunction) {
   const { email, password, code_challenge, redirect_url } = req.body
 
-  if (!email || !password || !code_challenge)
+  if (!email || !password || !code_challenge || !redirect_url)
     throw new BadRequest("Something missing:(")
 
   let user = await User.findOne({ email })
@@ -85,9 +86,11 @@ export async function token(req: Request, res: Response, next: NextFunction) {
   if (newChallenge !== code.code_challenge)
     throw new Unauthorized("PKCE code challenge does not match.")
 
-  code.generateAccessToken()
+  const token = await code.generateAccessToken()
 
-  res.status(200).send("success")
+  res
+    .status(200)
+    .json({ success: true, msg: "Token generated successfully.", token })
 }
 
 export async function changePassword(
@@ -95,15 +98,21 @@ export async function changePassword(
   res: Response,
   next: NextFunction,
 ) {
-  const { email, password } = req.body
+  const { email, password, otpId } = req.body
 
-  if (!email || !password) throw new BadRequest("Something missing:(")
+  if (!email || !password || !otpId) throw new BadRequest("Something missing:(")
+
+  const otpInDb = await OTP.findOne({ _id: otpId })
+  if (!otpInDb || !otpInDb.verified)
+    throw new Forbidden("You're not allowed to change password.")
 
   let user = await User.findOne({ email })
   if (!user) throw new NotFound("User not found")
 
   user.password = password
   await user.save()
+
+  OTP.deleteOne({ _id: otpId })
 
   res
     .status(StatusCodes.OK)

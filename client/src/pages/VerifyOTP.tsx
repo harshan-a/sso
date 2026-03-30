@@ -11,7 +11,9 @@ import { sendOTP, verifyOTP } from "../apis/otp"
 type VerifyOTPProps = {
   email: { mail: string; valid: boolean }
   setEmail: Dispatch<SetStateAction<{ mail: string; valid: boolean }>>
-  setIsOTPVerified: Dispatch<SetStateAction<boolean>>
+  setIsOTPVerified: Dispatch<
+    SetStateAction<{ verified: boolean; otpId: string }>
+  >
 }
 
 export default function VerifyOTP({
@@ -33,7 +35,7 @@ export default function VerifyOTP({
       if (isOTPSend) {
         const { data } = await verifyOTP({ email: email.mail, otp })
 
-        setIsOTPVerified(data.success)
+        setIsOTPVerified({ verified: data.success, otpId: data.otpId })
         setMessage({ success: data.success, text: data.msg })
       } else {
         const { data } = await sendOTP({ email: email.mail })

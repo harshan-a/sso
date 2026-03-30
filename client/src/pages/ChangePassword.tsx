@@ -12,11 +12,13 @@ import { AxiosError } from "axios"
 type ChangePasswordProps = {
   email: string
   setForgotPassword: Dispatch<SetStateAction<boolean>>
+  isOTPVerified: { verified: boolean; otpId: string }
 }
 
 export default function ChangePassword({
   email,
   setForgotPassword,
+  isOTPVerified,
 }: ChangePasswordProps) {
   const [password, setPassword] = useState("")
   const [confirmPassword, setConfirmPassword] = useState("")
@@ -31,7 +33,11 @@ export default function ChangePassword({
 
     setIsLoading(true)
     try {
-      const { data } = await changePassword({ email, password })
+      const { data } = await changePassword({
+        email,
+        password,
+        otpId: isOTPVerified.otpId,
+      })
       setMessage({ success: data.success, text: data.msg })
 
       setTimeout(() => setForgotPassword(false), 200)

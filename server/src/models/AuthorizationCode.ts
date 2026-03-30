@@ -1,7 +1,7 @@
 import mongoose, { Schema, model } from "mongoose"
 import fs from "fs"
 import path from "path"
-import { importPKCS8, SignJWT, importSPKI, jwtVerify } from "jose"
+import { importPKCS8, SignJWT, importSPKI } from "jose"
 
 const authorizationCodeSchema = new Schema(
   {
@@ -32,18 +32,18 @@ const authorizationCodeSchema = new Schema(
           "utf-8",
         )
         const privateCryptoKey = await importPKCS8(privateKeyPem, "RS256")
-        const publicCryptoKey = await importSPKI(publicKeyPem, "RS256")
 
         const token = await new SignJWT({ userId: this.userId.toString() })
           .setProtectedHeader({ alg: "RS256", kid: "key-1" })
           .sign(privateCryptoKey)
 
-        const { payload } = await jwtVerify(token, publicCryptoKey)
+        // const { payload } = await jwtVerify(token, publicCryptoKey)
 
-        console.log(privateKeyPem)
-        console.log(token)
-        console.log(payload)
-        console.log(privateCryptoKey)
+        // console.log(privateKeyPem)
+        // console.log(token)
+        // console.log(payload)
+        // console.log(privateCryptoKey)
+        return token
       },
     },
   },

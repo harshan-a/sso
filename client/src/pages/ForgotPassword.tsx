@@ -10,14 +10,18 @@ export default function ForgotPassword({
   setForgotPassword,
 }: ForgotPasswordProps) {
   const [email, setEmail] = useState({ valid: false, mail: "" })
-  const [isOTPVerified, setIsOTPVerified] = useState(false)
+  const [isOTPVerified, setIsOTPVerified] = useState({
+    verified: false,
+    otpId: "",
+  })
 
   return (
     <>
-      {isOTPVerified ? (
+      {isOTPVerified.verified ? (
         <ChangePassword
           email={email.mail}
           setForgotPassword={setForgotPassword}
+          isOTPVerified={isOTPVerified}
         />
       ) : (
         <>
