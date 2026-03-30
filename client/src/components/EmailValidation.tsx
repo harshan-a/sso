@@ -1,3 +1,4 @@
+import api from "../apis/axios"
 import axios from "axios"
 import {
   useEffect,
@@ -26,7 +27,7 @@ export default function EmailValidation({
 
     async function getUser() {
       try {
-        const { data } = await axios.get(
+        const { data } = await api.get(
           "/api/v1/users/check?email=" + input.mail,
           {
             signal: controller.signal,
