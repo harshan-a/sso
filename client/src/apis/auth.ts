@@ -1,5 +1,5 @@
 import type { AxiosResponse } from "axios"
-import axios from "axios"
+import axios from "./axios"
 
 type LoginData = {
   name: string
