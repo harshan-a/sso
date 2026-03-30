@@ -3,7 +3,7 @@ dotenv.config()
 import express from "express"
 import cookieParser from "cookie-parser"
 import cors from "cors"
-import morgan from "morgan"
+// import morgan from "morgan"
 import swaggerUI from "swagger-ui-express"
 import YamlJs from "yamljs"
 
@@ -23,7 +23,7 @@ app.use(express.json({ limit: "10kb" })) // body parser (data limited to 10kb)
 // app.use(express.urlencoded({ limit: "10kb" })) // form data parser (data limited to 10kb)
 app.use(cookieParser())
 
-app.use(morgan("dev"))
+// app.use(morgan("dev"))
 
 // routes
 app.use("/api/v1/users", userRouter)

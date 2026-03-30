@@ -1,4 +1,4 @@
-import axios from "./axios"
+import axios from "axios"
 import type { AxiosResponse } from "axios"
 
 export function sendOTP({ email }: { email: string }): Promise<AxiosResponse> {

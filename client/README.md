@@ -1,75 +1,180 @@
-# React + TypeScript + Vite
+# SSO Client - Frontend Application
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+The frontend component of the SSO Authentication System, built with React and TypeScript.
 
-Currently, two official plugins are available:
+## Overview
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+This is a React-based single-page application that provides the user interface for authentication operations including login, signup, password management, and OTP verification. It communicates with the backend API server to handle user authentication flows.
 
-## React Compiler
+## Features
 
-The React Compiler is enabled on this template. See [this documentation](https://react.dev/learn/react-compiler) for more information.
+- User-friendly authentication forms
+- Responsive design with Tailwind CSS
+- Real-time form validation
+- Loading states and error handling
+- OTP verification flow
+- Password strength indicator
+- Email validation
+- Client-side routing with React Router
 
-Note: This will impact Vite dev & build performances.
+## Technology Stack
 
-## Expanding the ESLint configuration
+- **React 19**: Modern React with hooks and concurrent features
+- **TypeScript**: Type-safe JavaScript
+- **Vite**: Fast build tool and development server
+- **Tailwind CSS**: Utility-first CSS framework
+- **Axios**: HTTP client for API requests
+- **React Router**: Client-side routing
+- **ESLint**: Code linting and formatting
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+## Project Structure
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
-
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+```
+src/
+├── components/          # Reusable UI components
+│   ├── Header.tsx      # Application header
+│   ├── PasswordBar.tsx # Password strength indicator
+│   └── EmailValidation.tsx # Email validation component
+├── pages/              # Page components
+│   ├── Form.tsx        # Main authentication form
+│   ├── Login.tsx       # Login page
+│   ├── Signup.tsx      # Registration page
+│   ├── ChangePassword.tsx # Password change page
+│   ├── ForgotPassword.tsx # Password recovery page
+│   └── VerifyOTP.tsx   # OTP verification page
+├── context/            # React context providers
+│   ├── Loading.tsx     # Loading state management
+│   └── ClientData.tsx  # Client data context
+├── apis/               # API client functions
+│   ├── auth.ts         # Authentication API calls
+│   ├── axios.ts        # Axios configuration
+│   └── otp.ts          # OTP-related API calls
+├── assets/             # Static assets
+│   ├── icons/          # Icon files
+│   └── logos/          # Logo files
+├── types.d.ts          # TypeScript type definitions
+├── App.tsx             # Main application component
+├── main.tsx            # Application entry point
+└── index.css           # Global styles
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+## Getting Started
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+### Prerequisites
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+- Node.js (v16 or higher)
+- npm or yarn
+
+### Installation
+
+1. Navigate to the client directory:
+
+   ```bash
+   cd client
+   ```
+
+2. Install dependencies:
+   ```bash
+   npm install
+   ```
+
+### Development
+
+Start the development server:
+
+```bash
+npm run dev
 ```
+
+The application will be available at `http://localhost:5173`
+
+### Building for Production
+
+Build the application for production:
+
+```bash
+npm run build
+```
+
+Preview the production build:
+
+```bash
+npm run preview
+```
+
+### Code Quality
+
+Run ESLint to check code quality:
+
+```bash
+npm run lint
+```
+
+## Configuration
+
+The client application expects the backend API to be running. Update the API base URL in `src/apis/axios.ts` if needed:
+
+```typescript
+const api = axios.create({
+  baseURL: "http://localhost:5000/api/v1", // Update this URL if your server runs on a different port
+  withCredentials: true,
+})
+```
+
+## Key Components
+
+### Authentication Flow
+
+1. **Form Component**: Main container that manages the authentication state and renders appropriate forms
+2. **Login/Signup**: User credential input forms
+3. **OTP Verification**: Email-based OTP verification
+4. **Password Management**: Change password and forgot password flows
+
+### Context Providers
+
+- **LoadingProvider**: Manages global loading states
+- **ClientDataProvider**: Manages client-side data and authentication state
+
+### API Integration
+
+The client uses Axios for HTTP requests with the following API endpoints:
+
+- `POST /auth/login` - User login
+- `POST /auth/signup` - User registration
+- `POST /auth/change-password` - Password change
+- `POST /otp/send` - Send OTP
+- `POST /otp/verify` - Verify OTP
+- `GET /users/check` - Check email existence
+
+## Styling
+
+The application uses Tailwind CSS for styling with custom CSS in `index.css` and component-specific styles in `App.css`.
+
+## Browser Support
+
+- Chrome (latest)
+- Firefox (latest)
+- Safari (latest)
+- Edge (latest)
+
+## Development Notes
+
+- The application uses React 19's new features including the React Compiler
+- TypeScript is configured with strict type checking
+- ESLint rules are customized for React and TypeScript best practices
+- The build process includes TypeScript compilation and asset optimization
+
+## Troubleshooting
+
+### Common Issues
+
+1. **API Connection Errors**: Ensure the backend server is running on the correct port
+2. **CORS Errors**: Check CORS configuration in the backend
+3. **Build Errors**: Clear node_modules and reinstall dependencies
+
+### Development Tips
+
+- Use React Developer Tools for debugging
+- Check the browser console for API errors
+- Use the Network tab to monitor API requests</content>
+  <parameter name="oldString">
